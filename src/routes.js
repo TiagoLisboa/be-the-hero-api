@@ -56,7 +56,18 @@ routes.delete(
   IncidentController.delete
 );
 
-routes.get("/profile", ProfileController.index);
+routes.get(
+  "/profile",
+  celebrate({
+    [Segments.HEADERS]: Joi.object({
+      authorization: Joi.string().required(),
+    }).unknown(),
+    [Segments.QUERY]: {
+      page: Joi.number(),
+    },
+  }),
+  ProfileController.index
+);
 
 routes.post("/sessions", SessionController.create);
 

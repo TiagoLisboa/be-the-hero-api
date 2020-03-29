@@ -1,4 +1,4 @@
-const generateUniqueId = require("../../utils/generateUniqueId");
+const generateUniqueId = require("../../src/utils/generateUniqueId");
 
 describe("Unique ID generation", () => {
   it("should generate an unique hexadecimal ID", () => {

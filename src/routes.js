@@ -23,9 +23,38 @@ routes.post(
   OngController.create
 );
 
-routes.post("/incidents", IncidentController.create);
-routes.get("/incidents", IncidentController.index);
-routes.delete("/incidents/:id", IncidentController.delete);
+routes.post(
+  "/incidents",
+  celebrate({
+    [Segments.HEADERS]: Joi.object({
+      authorization: Joi.string().required(),
+    }).unknown(),
+    [Segments.BODY]: Joi.object().keys({
+      title: Joi.string().required(),
+      description: Joi.string().required(),
+      value: Joi.number().required(),
+    }),
+  }),
+  IncidentController.create
+);
+routes.get(
+  "/incidents",
+  celebrate({
+    [Segments.QUERY]: {
+      page: Joi.number(),
+    },
+  }),
+  IncidentController.index
+);
+routes.delete(
+  "/incidents/:id",
+  celebrate({
+    [Segments.HEADERS]: Joi.object({
+      authorization: Joi.string().required(),
+    }).unknown(),
+  }),
+  IncidentController.delete
+);
 
 routes.get("/profile", ProfileController.index);
 
